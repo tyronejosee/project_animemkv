@@ -1,0 +1,51 @@
+import type { Anime } from "@/types";
+import { Play } from "lucide-react";
+import Link from "next/link";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+interface HeroProps {
+  animes: Anime[];
+}
+
+export function Hero({ animes }: HeroProps) {
+  if (!animes.length) return null;
+  const featured = animes[0];
+
+  return (
+    <div className="relative w-full h-[400px] rounded-lg overflow-hidden mb-8 group shadow-xl">
+      <img
+        src={featured.bannerImage || featured.coverImage}
+        alt={featured.title}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent flex flex-col justify-end p-8">
+        <h2 className="text-4xl font-bold text-foreground mb-2 drop-shadow-lg">
+          {featured.title}
+        </h2>
+        <p className="text-muted-foreground line-clamp-2 mb-4 max-w-2xl drop-shadow-md">
+          {featured.synopsis}
+        </p>
+        <div className="flex gap-2 mb-4">
+          <Badge variant="default" className="font-bold shadow-sm">
+            {featured.type}
+          </Badge>
+          <Badge variant="secondary" className="font-bold shadow-sm">
+            {featured.status}
+          </Badge>
+        </div>
+        <Button
+          asChild
+          size="lg"
+          className="w-fit gap-2 shadow-lg hover:shadow-xl"
+        >
+          <Link href={`/anime/${featured.slug}`}>
+            <Play className="w-5 h-5 fill-current" />
+            VER AHORA
+          </Link>
+        </Button>
+      </div>
+    </div>
+  );
+}
