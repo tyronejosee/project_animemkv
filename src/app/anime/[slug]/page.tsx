@@ -1,7 +1,7 @@
-import { Play, Star, Tv, Users } from "lucide-react";
-import Link from "next/link";
+import { Play, Star } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { EpisodeList } from "@/components/anime/episode-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,15 +22,10 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
     notFound();
   }
 
-  const episodes = Array.from({ length: 12 }, (_, i) => ({
-    number: i + 1,
-    title: `Episodio ${i + 1}`,
-    image: anime.coverImage,
-    date: "2025-11-29",
-  }));
+  const episodes = await api.getEpisodes(anime.id);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Header with cover image */}
       <div className="relative h-[200px] bg-linear-to-b from-black/80 to-background">
         <div className="absolute inset-0 bg-black/40" />
@@ -67,10 +62,6 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                 <Star className="w-4 h-4" />
                 AGREGAR
               </Button>
-              <Button variant="outline" className="w-full gap-2" size="lg">
-                <Users className="w-4 h-4" />
-                SEGUIR
-              </Button>
             </div>
 
             {/* Info Card */}
@@ -100,10 +91,10 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
           </div>
 
           {/* Main Content */}
-          <div className="space-y-6">
+          <div className="flex flex-col gap-4">
             {/* Title and Rating */}
             <div>
-              <div className="flex items-start justify-between mb-2">
+              <div className="flex items-start justify-between">
                 <h1 className="text-3xl md:text-4xl font-bold">
                   {anime.title}
                 </h1>
@@ -113,7 +104,7 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                 </div>
               </div>
               <div>
-                {anime.genres.map((genre) => (
+                {anime.genres.map((genre: string) => (
                   <Badge key={genre} variant="outline">
                     {genre}
                   </Badge>
@@ -126,7 +117,7 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
             </div>
 
             {/* Synopsis Tabs */}
-            <Card>
+            <Card className="mt-4">
               <CardContent className="p-6">
                 <Tabs defaultValue="sinopsis">
                   <TabsList>
@@ -154,52 +145,15 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
             </Card>
 
             {/* Episodes List */}
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold">Lista de episodios</h2>
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <Tv className="w-4 h-4" />
-                    Mover a Próximo
-                  </Button>
-                </div>
-
-                <div className="space-y-2">
-                  {episodes.map((ep) => (
-                    <Link
-                      href={`/ver/${anime.slug}-${ep.number}`}
-                      key={ep.number}
-                      className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
-                    >
-                      <div className="relative w-20 h-12 rounded overflow-hidden shrink-0">
-                        <img
-                          src={ep.image}
-                          alt={ep.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Play className="w-4 h-4 text-white fill-current" />
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium group-hover:text-primary transition-colors">
-                          {anime.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {ep.title}
-                        </p>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {ep.date}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <EpisodeList
+              episodes={episodes}
+              animeSlug={anime.slug}
+              animeTitle={anime.title}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 }
+

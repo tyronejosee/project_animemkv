@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body
-        className={`${inter.className} min-h-screen flex flex-col bg-[#f5f5f5] dark:bg-[#000000]`}
+        className={`${inter.className} min-h-screen flex flex-col`}
       >
         <ThemeProvider
           attribute="class"

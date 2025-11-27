@@ -1,5 +1,3 @@
-import { Tv } from "lucide-react";
-
 import { AnimeList } from "@/components/features/AnimeList";
 import { DirectoryFilters } from "@/components/features/DirectoryFilters";
 import { DirectoryPagination } from "@/components/features/DirectoryPagination";
@@ -20,44 +18,32 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const page = parseInt(params.page || "1");
 
-  const {
-    data: animes,
-    total,
-    totalPages,
-  } = await api.getAnimes({
+  const { data: animes, totalPages } = await api.getAnimes({
     genre: params.genre,
     year: params.year,
     type: params.type,
     status: params.status,
     order: params.order,
     page,
-    limit: 24,
+    limit: 12,
   });
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Tv className="w-6 h-6 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold">Directorio Anime</h1>
-            <p className="text-sm text-muted-foreground">
-              Mostrando {animes.length} de {total} resultados
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="container mx-auto px-4 py-4">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
+        {/* Sidebar */}
+        <aside className="lg:sticky lg:top-20 h-fit">
+          <DirectoryFilters />
+        </aside>
 
-      {/* Filters */}
-      <DirectoryFilters />
+        {/* Main Content */}
+        <section className="space-y-4">
+          {/* Results */}
+          <AnimeList animes={animes} />
 
-      {/* Results */}
-      <AnimeList animes={animes} />
-      <div className="mt-8">
-        <DirectoryPagination currentPage={page} totalPages={totalPages} />
+          {/* Pagination */}
+          <DirectoryPagination currentPage={page} totalPages={totalPages} />
+        </section>
       </div>
     </div>
   );
