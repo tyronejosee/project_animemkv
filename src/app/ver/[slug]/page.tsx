@@ -2,9 +2,10 @@ import { ChevronLeft, ChevronRight, Home, List } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { CommentsSection } from "@/components/features/CommentsSection";
 import { VideoPlayer } from "@/components/features/VideoPlayer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -20,20 +21,22 @@ export default async function EpisodePage({ params }: PageProps) {
   const number = parseInt(parts.pop() || "0");
   const animeSlug = parts.join("-");
 
-  const episode = await api.getEpisode(animeSlug, number);
+  let episode = await api.getEpisode(animeSlug, number);
   const anime = await api.getAnimeBySlug(animeSlug);
 
+  const sources = episode ? await api.getVideoSources(episode.id) : [];
+
   if (!episode || !anime) {
-    if (anime && !isNaN(number)) {
-    } else {
-      notFound();
-    }
+    notFound();
   }
+
+  const allEpisodes = await api.getEpisodes(anime.id);
+  const hasNextEpisode = allEpisodes.some((e) => e.number === number + 1);
 
   return (
     <div className="container mx-auto px-4 py-6">
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+      <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
         <Link
           href="/"
           className={cn(
@@ -56,61 +59,77 @@ export default async function EpisodePage({ params }: PageProps) {
       </nav>
 
       {/* Page Title */}
-      <h1 className="text-3xl font-bold tracking-tight mb-6">
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">
         {anime?.title}{" "}
         <span className="text-muted-foreground">· Episodio {number}</span>
       </h1>
 
-      {/* Video Player Section */}
-      <div className="mb-6">
-        <VideoPlayer title={`${anime?.title} - Episodio ${number}`} />
+      {/* Main Content Grid - Video Player + Comments */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Left Column - Video Player and Navigation */}
+        <div className="lg:col-span-2 space-y-4">
+          {/* Video Player */}
+          <div className="w-full">
+            <VideoPlayer
+              title={`${anime?.title} - Episodio ${number}`}
+              sources={sources}
+            />
+          </div>
+
+          {/* Episode Navigation */}
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex justify-between items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="default"
+                  asChild
+                  disabled={number <= 1}
+                  className={cn(number <= 1 && "opacity-50 cursor-not-allowed")}
+                >
+                  <Link href={number > 1 ? `/ver/${animeSlug}-${number - 1}` : "#"}>
+                    <ChevronLeft />
+                    <span className="hidden sm:inline">Anterior</span>
+                  </Link>
+                </Button>
+
+                <Button variant="outline" size="default" asChild>
+                  <Link href={`/anime/${animeSlug}`}>
+                    <List />
+                    <span className="hidden sm:inline">Lista de Episodios</span>
+                  </Link>
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="default"
+                  asChild
+                  disabled={!hasNextEpisode}
+                  className={cn(
+                    !hasNextEpisode && "opacity-50 cursor-not-allowed"
+                  )}
+                >
+                  <Link
+                    href={
+                      hasNextEpisode ? `/ver/${animeSlug}-${number + 1}` : "#"
+                    }
+                  >
+                    <span className="hidden sm:inline">Siguiente</span>
+                    <ChevronRight />
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Column - Comments */}
+        <div className="lg:col-span-1">
+          <div className="lg:sticky lg:top-4 h-[600px] lg:h-[calc(100vh-8rem)]">
+            <CommentsSection />
+          </div>
+        </div>
       </div>
-
-      {/* Episode Navigation */}
-      <Card className="mb-6">
-        <CardContent className="p-4">
-          <div className="flex justify-between items-center gap-4">
-            <Button
-              variant="ghost"
-              size="default"
-              asChild
-              disabled={number <= 1}
-              className={cn(number <= 1 && "opacity-50 cursor-not-allowed")}
-            >
-              <Link href={number > 1 ? `/ver/${animeSlug}-${number - 1}` : "#"}>
-                <ChevronLeft />
-                <span className="hidden sm:inline">Anterior</span>
-              </Link>
-            </Button>
-
-            <Button variant="outline" size="default" asChild>
-              <Link href={`/anime/${animeSlug}`}>
-                <List />
-                <span className="hidden sm:inline">Lista de Episodios</span>
-              </Link>
-            </Button>
-
-            <Button variant="ghost" size="default" asChild>
-              <Link href={`/ver/${animeSlug}-${number + 1}`}>
-                <span className="hidden sm:inline">Siguiente</span>
-                <ChevronRight />
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Comments Section Placeholder */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Comentarios</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="bg-muted/50 p-8 rounded-md text-center text-muted-foreground">
-            Sistema de comentarios próximamente...
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

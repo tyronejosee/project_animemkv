@@ -2,7 +2,7 @@ import { Star } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import type { Anime } from "@/types";
 
 interface AnimeCardProps {
@@ -12,78 +12,83 @@ interface AnimeCardProps {
 export function AnimeCard({ anime }: AnimeCardProps) {
   return (
     <Link href={`/anime/${anime.slug}`} className="group">
-      <Card className="overflow-hidden border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 h-full">
+      <Card className="overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
         <div className="relative aspect-2/3 overflow-hidden">
+          {/* Cover Image */}
           <img
             src={anime.coverImage}
             alt={anime.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
 
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+          {/* Gradient overlay - only visible on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-          {/* Type badge */}
-          <div className="absolute top-2 left-2">
-            <Badge
-              variant={anime.type === "Anime" ? "default" : "secondary"}
-              className="font-bold"
-            >
-              {anime.type}
-            </Badge>
-          </div>
+          {/* Content overlay - slides up on hover */}
+          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
+            {/* Genres */}
+            {anime.genres && anime.genres.length > 0 && (
+              <div className="flex flex-wrap gap-1 mb-3">
+                {anime.genres.slice(0, 3).map((genre) => (
+                  <Badge
+                    key={genre}
+                    variant="secondary"
+                    className="text-[10px] px-2 py-0.5 bg-white/20 text-white border-white/30 hover:bg-white/30"
+                  >
+                    {genre}
+                  </Badge>
+                ))}
+                {anime.genres.length > 3 && (
+                  <Badge
+                    variant="secondary"
+                    className="text-[10px] px-2 py-0.5 bg-white/20 text-white border-white/30"
+                  >
+                    +{anime.genres.length - 3}
+                  </Badge>
+                )}
+              </div>
+            )}
 
-          {/* Rating */}
-          {anime.rating && (
-            <div className="absolute top-2 right-2 flex items-center gap-1 bg-background/90 backdrop-blur-sm px-2 py-1 rounded-md">
-              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-              <span className="text-xs font-bold">{anime.rating}</span>
-            </div>
-          )}
+            {/* Badges row */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Type badge */}
+              <Badge
+                variant={anime.type === "Anime" ? "default" : "secondary"}
+                className="text-xs font-bold"
+              >
+                {anime.type}
+              </Badge>
 
-          {/* Status badge at bottom */}
-          <div className="absolute bottom-2 left-2">
-            <Badge
-              variant="outline"
-              className={`text-xs ${
-                anime.status === "En emision"
-                  ? "bg-green-600/90 dark:bg-green-500/90 text-white border-green-600 dark:border-green-500"
+              {/* Status badge */}
+              <Badge
+                variant="outline"
+                className={`text-xs ${anime.status === "En emision"
+                  ? "bg-green-600/90 text-white border-green-400"
                   : anime.status === "Finalizado"
-                  ? "bg-muted/90 text-muted-foreground border-muted"
-                  : "bg-primary/90 text-primary-foreground border-primary"
-              }`}
-            >
-              {anime.status}
-            </Badge>
-          </div>
-        </div>
+                    ? "bg-gray-600/90 text-white border-gray-400"
+                    : "bg-primary/90 text-primary-foreground border-primary"
+                  }`}
+              >
+                {anime.status}
+              </Badge>
 
-        <CardContent className="p-3">
-          <h3 className="text-sm font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors min-h-10">
-            {anime.title}
-          </h3>
-
-          {/* Genres */}
-          {anime.genres && anime.genres.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-2">
-              {anime.genres.slice(0, 2).map((genre) => (
-                <Badge
-                  key={genre}
-                  variant="outline"
-                  className="text-[10px] px-1.5 py-0"
-                >
-                  {genre}
-                </Badge>
-              ))}
-              {anime.genres.length > 2 && (
-                <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                  +{anime.genres.length - 2}
-                </Badge>
+              {/* Rating */}
+              {anime.rating && (
+                <div className="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-md">
+                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  <span className="text-xs font-bold text-white">{anime.rating}</span>
+                </div>
               )}
             </div>
-          )}
-        </CardContent>
+          </div>
+        </div>
       </Card>
+      <div className="text-center pt-2">
+        {/* Title */}
+        <h3 className="text-sm font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+          {anime.title}
+        </h3>
+      </div>
     </Link>
   );
 }

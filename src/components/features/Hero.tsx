@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card } from "../ui/card";
 
 interface HeroProps {
   animes: Anime[];
@@ -14,7 +15,9 @@ export function Hero({ animes }: HeroProps) {
   const featured = animes[0];
 
   return (
-    <div className="relative w-full h-[400px] rounded-lg overflow-hidden mb-8 group shadow-xl">
+    <Card
+      className="w-full h-[400px] relative overflow-hidden group"
+    >
       <img
         src={featured.bannerImage || featured.coverImage}
         alt={featured.title}
@@ -46,6 +49,9 @@ export function Hero({ animes }: HeroProps) {
           </Link>
         </Button>
       </div>
-    </div>
+    </Card>
+    // <div className="relative w-full h-[400px] rounded-lg overflow-hidden mb-8 group shadow-xl">
+
+    // </div>
   );
 }
