@@ -26,7 +26,7 @@ export function DirectoryPagination({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-8">
+    <div className="flex justify-center items-center gap-2">
       <Button
         variant="outline"
         size="icon"

@@ -3,8 +3,9 @@ import {
   MOCK_FEATURED_ANIMES,
   MOCK_LATEST_ANIMES,
   MOCK_NEWS,
+  MOCK_VIDEO_SOURCES,
 } from "@/lib/mock-data";
-import type { Anime, Episode, News } from "@/types";
+import type { Anime, Episode, News, VideoSource } from "@/types";
 
 import { AnimeFilters, DataProvider, PaginatedResult } from "./types";
 
@@ -114,6 +115,25 @@ export class MockDataProvider implements DataProvider {
           page,
           totalPages,
         });
+      }, 500);
+    });
+  }
+  async getVideoSources(episodeId: string): Promise<VideoSource[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const sources = MOCK_VIDEO_SOURCES.filter(
+          (s) => s.episodeId === episodeId
+        );
+        resolve(sources);
+      }, 500);
+    });
+  }
+
+  async getEpisodes(animeId: string): Promise<Episode[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const episodes = MOCK_EPISODES.filter((e) => e.animeId === animeId);
+        resolve(episodes);
       }, 500);
     });
   }

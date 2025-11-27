@@ -29,3 +29,10 @@ export interface News {
   category: string;
   url: string;
 }
+
+export interface VideoSource {
+  id: string;
+  episodeId: string;
+  platform: string;
+  url: string;
+}

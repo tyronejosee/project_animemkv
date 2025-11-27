@@ -1,4 +1,4 @@
-import type { Anime, Episode, News } from "@/types";
+import type { Anime, Episode, News, VideoSource } from "@/types";
 
 export interface AnimeFilters {
   genre?: string;
@@ -26,4 +26,6 @@ export interface DataProvider {
   getEpisode(slug: string, number: number): Promise<Episode | null>;
   searchAnimes(query: string): Promise<Anime[]>;
   getAnimes(filters: AnimeFilters): Promise<PaginatedResult<Anime>>;
+  getVideoSources(episodeId: string): Promise<VideoSource[]>;
+  getEpisodes(animeId: string): Promise<Episode[]>;
 }

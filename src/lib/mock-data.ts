@@ -1,19 +1,76 @@
-import type { Anime, Episode, News } from "@/types";
+import type { Anime, Episode, News, VideoSource } from "@/types";
+
+export const STATUSES = ["En emision", "Finalizado", "Proximamente"];
+export const TYPES = ["Anime", "Pelicula", "OVA", "Especial"];
+export const GENRES = [
+  "Acción",
+  "Aventura",
+  "Comedia",
+  "Drama",
+  "Fantasia",
+  "Magia",
+  "Mecha",
+  "Música",
+  "Misterio",
+  "Psicológico",
+  "Romance",
+  "Ciencia ficción",
+  "Seinen",
+  "Shoujo",
+  "Shounen",
+  "Vida cotidiana",
+  "Deporte",
+  "Sobrenatural",
+  "Suspenso",
+];
+
+export const MOCK_VIDEO_SOURCES: VideoSource[] = [
+  {
+    id: "src1",
+    episodeId: "ep1",
+    platform: "Streamwish",
+    url: "https://streamwish.to/e/ifzp195fd6z7",
+  },
+  {
+    id: "src2",
+    episodeId: "ep2",
+    platform: "Streamwish",
+    url: "https://streamwish.to/e/dy3je8d4cqnh",
+  },
+  {
+    id: "src3",
+    episodeId: "ep3",
+    platform: "Streamwish",
+    url: "https://streamwish.to/e/f0041oz6n0ww",
+  },
+  {
+    id: "src4",
+    episodeId: "ep4",
+    platform: "Streamwish",
+    url: "https://streamwish.to/e/d8y63cnllf7r",
+  },
+  {
+    id: "src5",
+    episodeId: "ep5",
+    platform: "Streamwish",
+    url: "https://streamwish.to/e/6kte5pmaankh",
+  },
+];
 
 export const MOCK_FEATURED_ANIMES: Anime[] = [
   {
     id: "1",
-    title: "One Piece",
-    slug: "one-piece",
-    coverImage: "https://placehold.co/600x400/00aaff/white?text=One+Piece",
+    title: "Katainaka no Ossan, Kensei ni Naru",
+    slug: "katainaka-no-ossan-kensei-ni-naru",
+    coverImage: "https://www3.animeflv.net/uploads/animes/covers/4149.jpg",
     bannerImage:
-      "https://placehold.co/1200x400/00aaff/white?text=One+Piece+Banner",
+      "https://www3.animeflv.net/uploads/animes/covers/4149.jpg",
     synopsis:
-      "Monkey D. Luffy refuses to let anyone or anything stand in the way of his quest to become the king of all pirates.",
-    status: "En emision",
+      "Beryl Gardinant, un autoproclamado “humilde anciano”, es un instructor de espada en su dojo ubicado en un pueblo rural y apartado. En su juventud, soñaba con alcanzar la gloria como maestro espadachín, pero esos días han quedado muy atrás. De repente, recibe la visita de un famoso exalumno que le trae una noticia impactante: ¡ha sido nombrado instructor especial para los caballeros de la Orden de Liberion! Con su vida completamente trastornada, Beryl viaja a la capital y se reúne con algunos de sus antiguos alumnos: caballeros de élite, un mago prodigioso e incluso un aventurero que ha alcanzado el rango más alto posible en el gremio. Pero, ¿por qué todos insisten en recibir nuevamente sus enseñanzas? Desde su punto de vista, está claro que ya no lo necesitan. ¿Podrá Beryl estar a la altura de su nueva posición? ¿Y alguna vez logrará disfrutar de un momento de tranquilidad lejos de sus adoradores estudiantes?",
+    status: "Finalizado",
     type: "Anime",
     rating: 4.5,
-    genres: ["Action", "Adventure", "Comedy", "Fantasy", "Shounen"],
+    genres: ["Action", "Aventura", "Fantasia"],
   },
   {
     id: "2",
@@ -34,95 +91,54 @@ export const MOCK_EPISODES: Episode[] = [
   {
     id: "ep1",
     animeId: "1",
-    title: "One Piece",
-    number: 1080,
-    image: "https://placehold.co/320x180/00aaff/white?text=One+Piece+1080",
-    url: "/ver/one-piece-1080",
+    title: "Katainaka no Ossan, Kensei ni Naru",
+    number: 1,
+    image: "https://placehold.co/320x180/00aaff/white?text=Katainaka+1",
+    url: "/ver/katainaka-no-ossan-kensei-ni-naru-1",
   },
   {
     id: "ep2",
-    animeId: "2",
-    title: "Detective Conan",
-    number: 1100,
-    image: "https://placehold.co/320x180/ff5500/white?text=Conan+1100",
-    url: "/ver/detective-conan-1100",
+    animeId: "1",
+    title: "Katainaka no Ossan, Kensei ni Naru",
+    number: 2,
+    image: "https://placehold.co/320x180/00aaff/white?text=Katainaka+2",
+    url: "/ver/katainaka-no-ossan-kensei-ni-naru-2",
   },
   {
     id: "ep3",
-    animeId: "3",
-    title: "Yasei no Last Boss ga Arawareta!",
-    number: 9,
-    image: "https://placehold.co/320x180/444444/white?text=Yasei+9",
-    url: "/ver/yasei-no-last-boss-ga-arawareta-9",
+    animeId: "1",
+    title: "Katainaka no Ossan, Kensei ni Naru",
+    number: 3,
+    image: "https://placehold.co/320x180/00aaff/white?text=Katainaka+3",
+    url: "/ver/katainaka-no-ossan-kensei-ni-naru-3",
   },
   {
     id: "ep4",
-    animeId: "4",
-    title: "Kekkon Yubiwa Monogatari",
+    animeId: "1",
+    title: "Katainaka no Ossan, Kensei ni Naru",
     number: 4,
-    image: "https://placehold.co/320x180/666666/white?text=Kekkon+4",
-    url: "/ver/kekkon-yubiwa-monogatari-4",
+    image: "https://placehold.co/320x180/00aaff/white?text=Katainaka+4",
+    url: "/ver/katainaka-no-ossan-kensei-ni-naru-4",
   },
   {
     id: "ep5",
-    animeId: "mock-10",
-    title: "Anime Mock Title 1",
+    animeId: "1",
+    title: "Katainaka no Ossan, Kensei ni Naru",
     number: 5,
-    image: "https://placehold.co/320x180/888888/white?text=Mock+5",
-    url: "/ver/anime-mock-title-1-5",
+    image: "https://placehold.co/320x180/00aaff/white?text=Katainaka+5",
+    url: "/ver/katainaka-no-ossan-kensei-ni-naru-5",
   },
   {
     id: "ep6",
-    animeId: "mock-11",
-    title: "Anime Mock Title 2",
+    animeId: "1",
+    title: "Katainaka no Ossan, Kensei ni Naru",
     number: 6,
-    image: "https://placehold.co/320x180/aaaaaa/white?text=Mock+6",
-    url: "/ver/anime-mock-title-2-6",
-  },
-  {
-    id: "ep7",
-    animeId: "mock-12",
-    title: "Anime Mock Title 3",
-    number: 7,
-    image: "https://placehold.co/320x180/cccccc/white?text=Mock+7",
-    url: "/ver/anime-mock-title-3-7",
-  },
-  {
-    id: "ep8",
-    animeId: "mock-13",
-    title: "Anime Mock Title 4",
-    number: 8,
-    image: "https://placehold.co/320x180/eeeeee/black?text=Mock+8",
-    url: "/ver/anime-mock-title-4-8",
+    image: "https://placehold.co/320x180/00aaff/white?text=Katainaka+6",
+    url: "/ver/katainaka-no-ossan-kensei-ni-naru-6",
   },
 ];
-
-const GENRES = [
-  "Action",
-  "Adventure",
-  "Comedy",
-  "Drama",
-  "Fantasy",
-  "Magic",
-  "Mecha",
-  "Music",
-  "Mystery",
-  "Psychological",
-  "Romance",
-  "Sci-Fi",
-  "Seinen",
-  "Shoujo",
-  "Shounen",
-  "Slice of Life",
-  "Sports",
-  "Supernatural",
-  "Thriller",
-];
-const STATUSES = ["En emision", "Finalizado", "Proximamente"];
-const TYPES = ["Anime", "Pelicula", "OVA", "Especial"];
 
 export const MOCK_LATEST_ANIMES: Anime[] = [
-  // Keep some real-looking data at the start
   {
     id: "3",
     title: "Yasei no Last Boss ga Arawareta!",
@@ -146,27 +162,27 @@ export const MOCK_LATEST_ANIMES: Anime[] = [
     genres: ["Fantasy", "Romance"],
   },
   // Generate the rest
-  ...Array.from({ length: 100 }).map((_, i) => {
-    const id = `mock-${i + 10}`;
-    const type = TYPES[i % TYPES.length];
-    return {
-      id,
-      title: `Anime Mock Title ${i + 1}`,
-      slug: `anime-mock-title-${i + 1}`,
-      coverImage: `https://placehold.co/600x900/${Math.floor(
-        Math.random() * 16777215
-      ).toString(16)}/white?text=Anime+${i + 1}`,
-      synopsis:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      status: STATUSES[i % STATUSES.length] as
-        | "En emision"
-        | "Finalizado"
-        | "Proximamente",
-      type: type as "Anime" | "Pelicula" | "OVA" | "Especial",
-      rating: parseFloat((Math.random() * 2 + 3).toFixed(1)), // Rating between 3.0 and 5.0
-      genres: [GENRES[i % GENRES.length], GENRES[(i + 5) % GENRES.length]],
-    };
-  }),
+  // ...Array.from({ length: 100 }).map((_, i) => {
+  //   const id = `mock-${i + 10}`;
+  //   const type = TYPES[i % TYPES.length];
+  //   return {
+  //     id,
+  //     title: `Anime Mock Title ${i + 1}`,
+  //     slug: `anime-mock-title-${i + 1}`,
+  //     coverImage: `https://placehold.co/600x900/${Math.floor(
+  //       Math.random() * 16777215
+  //     ).toString(16)}/white?text=Anime+${i + 1}`,
+  //     synopsis:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  //     status: STATUSES[i % STATUSES.length] as
+  //       | "En emision"
+  //       | "Finalizado"
+  //       | "Proximamente",
+  //     type: type as "Anime" | "Pelicula" | "OVA" | "Especial",
+  //     rating: parseFloat((Math.random() * 2 + 3).toFixed(1)), // Rating between 3.0 and 5.0
+  //     genres: [GENRES[i % GENRES.length], GENRES[(i + 5) % GENRES.length]],
+  //   };
+  // }),
 ];
 
 export const MOCK_NEWS: News[] = [

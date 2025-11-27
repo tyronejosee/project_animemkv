@@ -1,25 +1,26 @@
 "use client";
 
 import { Play } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { VideoSource } from "@/types";
 
 interface VideoPlayerProps {
   title: string;
+  sources: VideoSource[];
 }
 
-const SERVERS = [
-  { name: "Okru", url: "https://ok.ru/videoembed/5505300695633" },
-  { name: "YourUpload", url: "https://www.yourupload.com/embed/placeholder" },
-  { name: "Streamtape", url: "https://streamtape.com/e/placeholder" },
-  { name: "Go", url: "https://gogoplay.io/streaming.php?id=placeholder" },
-];
-
-export function VideoPlayer({ title }: VideoPlayerProps) {
-  const [selectedServer, setSelectedServer] = useState(SERVERS[0]);
+export function VideoPlayer({ title, sources }: VideoPlayerProps) {
+  const [selectedServer, setSelectedServer] = useState<VideoSource | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (sources.length > 0 && !selectedServer) {
+      setSelectedServer(sources[0]);
+    }
+  }, [sources, selectedServer]);
 
   if (!isPlaying) {
     return (
@@ -42,23 +43,31 @@ export function VideoPlayer({ title }: VideoPlayerProps) {
     );
   }
 
+  if (!selectedServer) {
+    return (
+      <div className="w-full aspect-video bg-black rounded-lg flex items-center justify-center text-muted-foreground">
+        No hay servidores disponibles
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
-        {SERVERS.map((server) => (
+        {sources.map((server) => (
           <Button
-            key={server.name}
+            key={server.id}
             onClick={() => setSelectedServer(server)}
             variant={
-              selectedServer.name === server.name ? "default" : "outline"
+              selectedServer.id === server.id ? "default" : "outline"
             }
             size="default"
             className={cn(
               "transition-all",
-              selectedServer.name === server.name && "shadow-md"
+              selectedServer.id === server.id && "shadow-md"
             )}
           >
-            {server.name}
+            {server.platform}
           </Button>
         ))}
       </div>

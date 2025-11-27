@@ -1,5 +1,5 @@
 import { getSupabase } from "@/lib/supabase";
-import { Anime, Episode, News } from "@/types";
+import { Anime, Episode, News, VideoSource } from "@/types";
 
 import type { AnimeFilters, DataProvider, PaginatedResult } from "./types";
 
@@ -250,5 +250,48 @@ export class SupabaseDataProvider implements DataProvider {
       page,
       totalPages: Math.ceil((count || 0) / limit),
     };
+  }
+
+  async getVideoSources(episodeId: string): Promise<VideoSource[]> {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from("video_sources")
+      .select("*")
+      .eq("episode_id", episodeId);
+
+    if (error) {
+      console.error("Error fetching video sources:", error);
+      return [];
+    }
+
+    return data.map((item: any) => ({
+      id: item.id,
+      episodeId: item.episode_id,
+      platform: item.platform,
+      url: item.url,
+    }));
+  }
+
+  async getEpisodes(animeId: string): Promise<Episode[]> {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from("episodes")
+      .select("*")
+      .eq("anime_id", animeId)
+      .order("number", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching episodes:", error);
+      return [];
+    }
+
+    return data.map((item: any) => ({
+      id: item.id,
+      animeId: item.anime_id,
+      title: item.title,
+      number: item.number,
+      image: item.image,
+      url: `/ver/${item.anime_id}-${item.number}`,
+    }));
   }
 }
