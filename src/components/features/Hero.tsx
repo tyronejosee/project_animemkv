@@ -1,5 +1,6 @@
 import type { Anime } from "@/types";
 import { Play } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
@@ -12,16 +13,20 @@ interface HeroProps {
 
 export function Hero({ animes }: HeroProps) {
   if (!animes.length) return null;
-  const featured = animes[0];
+  const featured = animes[1];
 
   return (
     <Card
       className="w-full h-[400px] relative overflow-hidden group"
     >
-      <img
+      <Image
         src={featured.bannerImage || featured.coverImage}
         alt={featured.title}
+        width={1920}
+        height={1080}
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        placeholder="blur"
+        blurDataURL="/images/placeholder.png"
       />
       <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent flex flex-col justify-end p-8">
         <h2 className="text-4xl font-bold text-foreground mb-2 drop-shadow-lg">
@@ -50,8 +55,5 @@ export function Hero({ animes }: HeroProps) {
         </Button>
       </div>
     </Card>
-    // <div className="relative w-full h-[400px] rounded-lg overflow-hidden mb-8 group shadow-xl">
-
-    // </div>
   );
 }

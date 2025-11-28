@@ -1,4 +1,5 @@
 import { Tv } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
@@ -12,17 +13,17 @@ interface SidebarProps {
 
 export function Sidebar({ airingAnimes }: SidebarProps) {
   return (
-    <aside className="w-full lg:w-80 shrink-0 lg:sticky lg:top-20 h-full">
-      <Card>
-        <CardHeader className="border-b">
+    <aside className="hidden lg:block w-full lg:w-80 shrink-0 lg:sticky lg:top-20 h-[calc(100vh-6rem)]">
+      <Card className="h-full flex flex-col">
+        <CardHeader className="border-b shrink-0">
           <CardTitle className="flex items-center gap-2">
             <Tv className="w-5 h-5 text-primary" />
             En Emisión
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
-          <ScrollArea className="h-[680px]">
-            <div className="flex flex-col">
+        <CardContent className="p-0 flex-1 overflow-hidden">
+          <ScrollArea className="h-full">
+            <div className="flex flex-col pb-4">
               {airingAnimes.map((anime, index) => (
                 <Link
                   href={`/anime/${anime.slug}`}
@@ -31,11 +32,15 @@ export function Sidebar({ airingAnimes }: SidebarProps) {
                     }`}
                 >
                   {/* Cover Image */}
-                  <div className="w-16 h-20 shrink-0 rounded overflow-hidden relative">
-                    <img
+                  <div className="w-16 h-24 shrink-0 rounded overflow-hidden relative">
+                    <Image
                       src={anime.coverImage}
                       alt={anime.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      fill
+                      sizes="64px"
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      placeholder="blur"
+                      blurDataURL="/images/placeholder.png"
                     />
                   </div>
 
