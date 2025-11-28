@@ -5,8 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AnimeStatus, AnimeType } from "@/lib/api/types";
 
-export function DirectoryFilters() {
+interface DirectoryFiltersProps {
+  genres: string[];
+}
+
+export function DirectoryFilters({ genres }: DirectoryFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -65,14 +70,11 @@ export function DirectoryFilters() {
               onChange={(e) => updateFilter("genre", e.target.value)}
             >
               <option value="Todos">Todos</option>
-              <option value="Action">Acción</option>
-              <option value="Adventure">Aventura</option>
-              <option value="Comedy">Comedia</option>
-              <option value="Fantasy">Fantasía</option>
-              <option value="Drama">Drama</option>
-              <option value="Romance">Romance</option>
-              <option value="Sci-Fi">Ciencia Ficción</option>
-              <option value="Shounen">Shounen</option>
+              {genres.map((genre) => (
+                <option key={genre} value={genre}>
+                  {genre}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -104,10 +106,11 @@ export function DirectoryFilters() {
               onChange={(e) => updateFilter("type", e.target.value)}
             >
               <option value="Todos">Todos</option>
-              <option value="Anime">Anime</option>
-              <option value="Pelicula">Película</option>
-              <option value="OVA">OVA</option>
-              <option value="Especial">Especial</option>
+              {Object.values(AnimeType).map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -122,9 +125,11 @@ export function DirectoryFilters() {
               onChange={(e) => updateFilter("status", e.target.value)}
             >
               <option value="Todos">Todos</option>
-              <option value="En emision">En emisión</option>
-              <option value="Finalizado">Finalizado</option>
-              <option value="Proximamente">Próximamente</option>
+              {Object.values(AnimeStatus).map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
             </select>
           </div>
 

@@ -1,5 +1,18 @@
 import type { Anime, Episode, News, VideoSource } from "@/types";
 
+export enum AnimeStatus {
+  ONGOING = "En emision",
+  FINISHED = "Finalizado",
+  UPCOMING = "Proximamente",
+}
+
+export enum AnimeType {
+  ANIME = "Anime",
+  MOVIE = "Pelicula",
+  OVA = "OVA",
+  SPECIAL = "Especial",
+}
+
 export interface AnimeFilters {
   genre?: string;
   year?: string;
@@ -28,4 +41,5 @@ export interface DataProvider {
   getAnimes(filters: AnimeFilters): Promise<PaginatedResult<Anime>>;
   getVideoSources(episodeId: string): Promise<VideoSource[]>;
   getEpisodes(animeId: string): Promise<Episode[]>;
+  getGenres(): Promise<string[]>;
 }

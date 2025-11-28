@@ -1,3 +1,4 @@
+import { GENRES } from "@/lib/mock-data";
 import { getSupabase } from "@/lib/supabase";
 import { Anime, Episode, News, VideoSource } from "@/types";
 
@@ -293,5 +294,11 @@ export class SupabaseDataProvider implements DataProvider {
       image: item.image,
       url: `/ver/${item.anime_id}-${item.number}`,
     }));
+  }
+
+  async getGenres(): Promise<string[]> {
+    // For now, return the static list of genres to ensure consistency
+    // In a real app, this might come from a 'genres' table or a distinct query
+    return GENRES;
   }
 }

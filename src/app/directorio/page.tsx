@@ -28,12 +28,14 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
     limit: 12,
   });
 
+  const genres = await api.getGenres();
+
   return (
     <div className="container mx-auto px-4 py-4">
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
         {/* Sidebar */}
         <aside className="lg:sticky lg:top-20 h-fit">
-          <DirectoryFilters />
+          <DirectoryFilters genres={genres} />
         </aside>
 
         {/* Main Content */}

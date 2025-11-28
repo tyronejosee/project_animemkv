@@ -4,6 +4,7 @@ import {
   MOCK_LATEST_ANIMES,
   MOCK_NEWS,
   MOCK_VIDEO_SOURCES,
+  GENRES,
 } from "@/lib/mock-data";
 import type { Anime, Episode, News, VideoSource } from "@/types";
 
@@ -135,6 +136,12 @@ export class MockDataProvider implements DataProvider {
         const episodes = MOCK_EPISODES.filter((e) => e.animeId === animeId);
         resolve(episodes);
       }, 500);
+    });
+  }
+
+  async getGenres(): Promise<string[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(GENRES), 500);
     });
   }
 }
