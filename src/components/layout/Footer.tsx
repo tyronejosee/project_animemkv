@@ -41,13 +41,13 @@ export function Footer() {
                 Política de Privacidad
               </Link>
               <Link
-                href="/sobre-animeflv"
+                href="/sobre-animemkv"
                 className={cn(
                   "text-muted-foreground transition-colors hover:text-foreground",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
                 )}
               >
-                Sobre AnimeFLV
+                Sobre AnimeMKV
               </Link>
             </nav>
           </div>
