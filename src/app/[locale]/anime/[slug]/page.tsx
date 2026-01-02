@@ -34,7 +34,7 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
           alt={anime.title}
           className="w-full h-full object-cover opacity-50 blur-xl scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-background/60 to-background" />
       </figure>
 
       <div className="container mx-auto p-4 lg:-mt-32 relative z-10">
@@ -46,7 +46,7 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
               <img
                 src={anime.coverImage}
                 alt={anime.title}
-                className="w-full aspect-[2/3] object-cover"
+                className="w-full aspect-2/3 object-cover"
               />
             </Card>
 
@@ -58,24 +58,27 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                 </h1>
 
                 {/* Alternative Titles */}
-                {anime.alternativeTitles && anime.alternativeTitles.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-1.5 px-4">
-                    {anime.alternativeTitles.map((title) => (
-                      <Badge
-                        key={title}
-                        variant="secondary"
-                        className="text-xs font-medium hover:bg-secondary/80 transition-colors"
-                      >
-                        {title}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                {anime.alternativeTitles &&
+                  anime.alternativeTitles.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-1.5 px-4">
+                      {anime.alternativeTitles.map((title) => (
+                        <Badge
+                          key={title}
+                          variant="secondary"
+                          className="text-xs font-medium hover:bg-secondary/80 transition-colors"
+                        >
+                          {title}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
 
                 <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
                   <div className="flex items-center gap-1 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
                     <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                    <span className="font-bold text-sm text-primary">{anime.rating}</span>
+                    <span className="font-bold text-sm text-primary">
+                      {anime.rating}
+                    </span>
                   </div>
                   {anime.genres.map((genre: string) => (
                     <Link key={genre} href={`/directorio?genre=${genre}`}>
@@ -114,7 +117,9 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
             <Card className="bg-card/50 backdrop-blur-sm border-muted/50">
               <CardContent className="p-5 space-y-4">
                 <div className="flex items-center justify-between text-sm border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                  <span className="text-muted-foreground font-medium">Tipo</span>
+                  <span className="text-muted-foreground font-medium">
+                    Tipo
+                  </span>
                   <Badge variant="secondary" className="font-bold">
                     {anime.type}
                   </Badge>
@@ -161,24 +166,27 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                     {anime.title}
                   </h1>
                   {/* Alternative Titles Desktop */}
-                  {anime.alternativeTitles && anime.alternativeTitles.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {anime.alternativeTitles.map((title) => (
-                        <Badge
-                          key={title}
-                          variant="outline"
-                          className="text-sm font-medium"
-                        >
-                          {title}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
+                  {anime.alternativeTitles &&
+                    anime.alternativeTitles.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {anime.alternativeTitles.map((title) => (
+                          <Badge
+                            key={title}
+                            variant="outline"
+                            className="text-sm font-medium"
+                          >
+                            {title}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                 </div>
                 <div className="flex flex-col items-end gap-1 shrink-0">
                   <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-xl border border-primary/20">
                     <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                    <span className="text-2xl font-bold text-primary">{anime.rating}</span>
+                    <span className="text-2xl font-bold text-primary">
+                      {anime.rating}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -201,11 +209,29 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
               <CardContent className="p-0 lg:p-6">
                 <Tabs defaultValue="sinopsis" className="w-full">
                   <TabsList className="w-full justify-start h-auto p-1 bg-muted/50">
-                    <TabsTrigger value="sinopsis" className="flex-1 lg:flex-none">Sinopsis</TabsTrigger>
-                    <TabsTrigger value="relacion" className="flex-1 lg:flex-none">Relación</TabsTrigger>
-                    <TabsTrigger value="recursos" className="flex-1 lg:flex-none">Recursos</TabsTrigger>
+                    <TabsTrigger
+                      value="sinopsis"
+                      className="flex-1 lg:flex-none"
+                    >
+                      Sinopsis
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="relacion"
+                      className="flex-1 lg:flex-none"
+                    >
+                      Relación
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="recursos"
+                      className="flex-1 lg:flex-none"
+                    >
+                      Recursos
+                    </TabsTrigger>
                   </TabsList>
-                  <TabsContent value="sinopsis" className="mt-4 animate-in fade-in-50">
+                  <TabsContent
+                    value="sinopsis"
+                    className="mt-4 animate-in fade-in-50"
+                  >
                     <p className="text-muted-foreground leading-relaxed text-lg">
                       {anime.synopsis}
                     </p>
@@ -242,4 +268,3 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
     </div>
   );
 }
-

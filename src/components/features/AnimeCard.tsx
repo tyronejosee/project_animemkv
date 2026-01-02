@@ -48,12 +48,13 @@ export function AnimeCard({ anime }: AnimeCardProps) {
             {/* Status badge */}
             <Badge
               variant="outline"
-              className={`text-[10px] font-medium px-2 py-0.5 border-0 backdrop-blur-md shadow-sm ${anime.status === "En emision"
-                ? "bg-green-500/90 text-white"
-                : anime.status === "Finalizado"
+              className={`text-[10px] font-medium px-2 py-0.5 border-0 backdrop-blur-md shadow-sm ${
+                anime.status === "En emision"
+                  ? "bg-green-500/90 text-white"
+                  : anime.status === "Finalizado"
                   ? "bg-black/60 text-white"
                   : "bg-primary/90 text-primary-foreground"
-                }`}
+              }`}
             >
               {anime.status}
             </Badge>
@@ -62,7 +63,9 @@ export function AnimeCard({ anime }: AnimeCardProps) {
             {anime.rating ? (
               <div className="flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md border border-white/10 shadow-sm">
                 <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                <span className="text-xs font-bold text-white">{anime.rating}</span>
+                <span className="text-xs font-bold text-white">
+                  {anime.rating}
+                </span>
               </div>
             ) : (
               <div />
