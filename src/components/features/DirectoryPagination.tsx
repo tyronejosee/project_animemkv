@@ -1,18 +1,22 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import type { Locale } from "@/i18n/config";
+import { routeMap } from "@/i18n/routes";
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
+  locale: Locale;
 }
 
 export function DirectoryPagination({
   currentPage,
   totalPages,
+  locale,
 }: PaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -20,7 +24,9 @@ export function DirectoryPagination({
   const goToPage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
-    router.push(`/directorio?${params.toString()}`);
+    router.push(
+      `/${locale}/${routeMap.directory[locale]}?${params.toString()}`
+    );
   };
 
   if (totalPages <= 1) return null;

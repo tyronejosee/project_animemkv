@@ -8,15 +8,30 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import type { Locale } from "@/i18n/config";
 import { api } from "@/lib/api";
 import { Anime } from "@/types";
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
+  locale: Locale;
+  dict: {
+    placeholder: string;
+    searching: string;
+    noResults: string;
+    startTyping: string;
+    statusMap: Record<string, string>;
+    typeMap: Record<string, string>;
+  };
 }
 
-export function SearchModal({ isOpen, onClose }: SearchModalProps) {
+export function SearchModal({
+  isOpen,
+  onClose,
+  locale,
+  dict,
+}: SearchModalProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(false);
@@ -63,16 +78,13 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-background/80 backdrop-blur-sm">
-      <div
-        className="absolute inset-0"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0" onClick={onClose} />
       <Card className="w-full max-w-2xl relative z-50 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         <div className="p-4 border-b flex items-center gap-3">
           <Search className="w-5 h-5 text-muted-foreground" />
           <Input
             autoFocus
-            placeholder="Buscar anime..."
+            placeholder={dict.placeholder}
             className="border-0 focus-visible:ring-0 px-0 text-lg h-auto shadow-none dark:bg-transparent"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -86,7 +98,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {loading ? (
             <div className="py-8 text-center text-muted-foreground">
               <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
-              Buscando...
+              {dict.searching}
             </div>
           ) : results.length > 0 ? (
             <ScrollArea className="h-[60vh] max-h-[500px]">
@@ -94,7 +106,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 {results.map((anime) => (
                   <Link
                     key={anime.id}
-                    href={`/anime/${anime.slug}`}
+                    href={`/${locale}/anime/${anime.slug}`}
                     onClick={onClose}
                     className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
                   >
@@ -110,9 +122,11 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         {anime.title}
                       </h4>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                        <span>{anime.type}</span>
+                        <span>{dict.typeMap[anime.type] || anime.type}</span>
                         <span>•</span>
-                        <span>{anime.status}</span>
+                        <span>
+                          {dict.statusMap[anime.status] || anime.status}
+                        </span>
                       </div>
                     </div>
                   </Link>
@@ -121,11 +135,11 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             </ScrollArea>
           ) : query.trim() ? (
             <div className="py-8 text-center text-muted-foreground">
-              No se encontraron resultados para "{query}"
+              {dict.noResults} "{query}"
             </div>
           ) : (
             <div className="py-8 text-center text-muted-foreground">
-              Escribe para buscar...
+              {dict.startTyping}
             </div>
           )}
         </div>

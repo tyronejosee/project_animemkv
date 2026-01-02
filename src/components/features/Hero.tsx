@@ -5,20 +5,25 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { Locale } from "@/i18n/config";
 import { Card } from "../ui/card";
 
 interface HeroProps {
   animes: Anime[];
+  locale: Locale;
+  dict: {
+    watchNow: string;
+    statusMap: Record<string, string>;
+    typeMap: Record<string, string>;
+  };
 }
 
-export function Hero({ animes }: HeroProps) {
+export function Hero({ animes, locale, dict }: HeroProps) {
   if (!animes.length) return null;
-  const featured = animes[1];
+  const featured = animes[0];
 
   return (
-    <Card
-      className="w-full h-[400px] relative overflow-hidden group"
-    >
+    <Card className="w-full h-[400px] relative overflow-hidden group">
       <Image
         src={featured.bannerImage || featured.coverImage}
         alt={featured.title}
@@ -37,10 +42,10 @@ export function Hero({ animes }: HeroProps) {
         </p>
         <div className="flex gap-2 mb-4">
           <Badge variant="default" className="font-bold shadow-sm">
-            {featured.type}
+            {dict.typeMap[featured.type] || featured.type}
           </Badge>
           <Badge variant="secondary" className="font-bold shadow-sm">
-            {featured.status}
+            {dict.statusMap[featured.status] || featured.status}
           </Badge>
         </div>
         <Button
@@ -48,9 +53,9 @@ export function Hero({ animes }: HeroProps) {
           size="lg"
           className="w-fit gap-2 shadow-lg hover:shadow-xl"
         >
-          <Link href={`/anime/${featured.slug}`}>
+          <Link href={`/${locale}/anime/${featured.slug}`}>
             <Play className="w-5 h-5 fill-current" />
-            VER AHORA
+            {dict.watchNow}
           </Link>
         </Button>
       </div>

@@ -7,16 +7,21 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { routeMap } from "@/i18n/routes";
 import { api } from "@/lib/api";
 
 interface PageProps {
   params: Promise<{
     slug: string;
+    locale: Locale;
   }>;
 }
 
 export default async function AnimeDetailsPage({ params }: PageProps) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const dict = await getDictionary(locale);
   const anime = await api.getAnimeBySlug(slug);
 
   if (!anime) {
@@ -81,7 +86,10 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                     </span>
                   </div>
                   {anime.genres.map((genre: string) => (
-                    <Link key={genre} href={`/directorio?genre=${genre}`}>
+                    <Link
+                      key={genre}
+                      href={`/${locale}/${routeMap.directory[locale]}?genre=${genre}`}
+                    >
                       <Badge
                         variant="secondary"
                         className="text-xs font-medium hover:bg-secondary/80 transition-colors"
@@ -101,7 +109,7 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                 size="lg"
               >
                 <Play className="w-5 h-5 fill-current" />
-                VER AHORA
+                {dict.animeDetails.watchNow}
               </Button>
               <Button
                 variant="outline"
@@ -109,7 +117,7 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                 size="lg"
               >
                 <Star className="w-5 h-5" />
-                AGREGAR A LISTA
+                {dict.animeDetails.addToList}
               </Button>
             </div>
 
@@ -118,15 +126,15 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
               <CardContent className="p-5 space-y-4">
                 <div className="flex items-center justify-between text-sm border-b border-border/50 pb-3 last:border-0 last:pb-0">
                   <span className="text-muted-foreground font-medium">
-                    Tipo
+                    {dict.animeDetails.type}
                   </span>
                   <Badge variant="secondary" className="font-bold">
-                    {anime.type}
+                    {dict.animeDetails.typeMap[anime.type] || anime.type}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between text-sm border-b border-border/50 pb-3 last:border-0 last:pb-0">
                   <span className="text-muted-foreground font-medium">
-                    Estado
+                    {dict.animeDetails.status}
                   </span>
                   <Badge
                     variant={
@@ -134,18 +142,18 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                     }
                     className="font-bold"
                   >
-                    {anime.status}
+                    {dict.animeDetails.statusMap[anime.status] || anime.status}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between text-sm border-b border-border/50 pb-3 last:border-0 last:pb-0">
                   <span className="text-muted-foreground font-medium">
-                    Episodios
+                    {dict.animeDetails.episodes}
                   </span>
                   <span className="font-bold">{episodes.length}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm border-b border-border/50 pb-3 last:border-0 last:pb-0">
                   <span className="text-muted-foreground font-medium">
-                    Rating
+                    {dict.animeDetails.rating}
                   </span>
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -192,7 +200,10 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
               </div>
               <div className="flex flex-wrap gap-2">
                 {anime.genres.map((genre: string) => (
-                  <Link key={genre} href={`/directorio?genre=${genre}`}>
+                  <Link
+                    key={genre}
+                    href={`/${locale}/${routeMap.directory[locale]}?genre=${genre}`}
+                  >
                     <Badge
                       variant="secondary"
                       className="text-sm px-4 py-1.5 font-medium hover:bg-secondary/80 transition-colors"
@@ -213,19 +224,19 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                       value="sinopsis"
                       className="flex-1 lg:flex-none"
                     >
-                      Sinopsis
+                      {dict.animeDetails.tabs.synopsis}
                     </TabsTrigger>
                     <TabsTrigger
                       value="relacion"
                       className="flex-1 lg:flex-none"
                     >
-                      Relación
+                      {dict.animeDetails.tabs.relation}
                     </TabsTrigger>
                     <TabsTrigger
                       value="recursos"
                       className="flex-1 lg:flex-none"
                     >
-                      Recursos
+                      {dict.animeDetails.tabs.resources}
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent
@@ -238,12 +249,12 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
                   </TabsContent>
                   <TabsContent value="relacion" className="mt-4">
                     <div className="p-8 text-center text-muted-foreground bg-muted/20 rounded-lg border border-dashed">
-                      No hay información de relación disponible.
+                      {dict.animeDetails.noRelation}
                     </div>
                   </TabsContent>
                   <TabsContent value="recursos" className="mt-4">
                     <div className="p-8 text-center text-muted-foreground bg-muted/20 rounded-lg border border-dashed">
-                      No hay recursos disponibles.
+                      {dict.animeDetails.noResources}
                     </div>
                   </TabsContent>
                 </Tabs>
@@ -254,12 +265,14 @@ export default async function AnimeDetailsPage({ params }: PageProps) {
             <div className="space-y-4">
               <h2 className="text-2xl font-bold flex items-center gap-2">
                 <Play className="w-6 h-6 text-primary" />
-                Episodios
+                {dict.animeDetails.episodes}
               </h2>
               <EpisodeList
                 episodes={episodes}
                 animeSlug={anime.slug}
                 animeTitle={anime.title}
+                dict={dict.animeDetails.episodesList}
+                locale={locale}
               />
             </div>
           </div>

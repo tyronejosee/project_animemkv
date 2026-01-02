@@ -3,15 +3,27 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import type { Locale } from "@/i18n/config";
+import { routeMap } from "@/i18n/routes";
 import type { Episode } from "@/types";
 
 interface EpisodeCardProps {
   episode: Episode;
+  locale: Locale;
+  dict: {
+    episodeAbbr: string;
+    timeAgo: string;
+  };
 }
 
-export function EpisodeCard({ episode }: EpisodeCardProps) {
+export function EpisodeCard({ episode, locale, dict }: EpisodeCardProps) {
+  const animeSlug = episode.url?.split("/").pop()?.split("-")[0] || "";
+
   return (
-    <Link href={episode.url || "#"} className="group">
+    <Link
+      href={`/${locale}/${routeMap.watch[locale]}/${animeSlug}-${episode.number}`}
+      className="group"
+    >
       <Card className="overflow-hidden h-full border-border/50 bg-card hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 ">
         <div className="relative aspect-video overflow-hidden">
           <img
@@ -36,7 +48,7 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
               variant="secondary"
               className="bg-background/90 backdrop-blur-sm font-bold"
             >
-              EP {episode.number}
+              {dict.episodeAbbr} {episode.number}
             </Badge>
           </div>
         </div>
@@ -47,7 +59,7 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
           </h3>
           <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
             <Clock className="w-3 h-3" />
-            <span>Hace 2 horas</span>
+            <span>{dict.timeAgo}</span>
           </div>
         </CardContent>
       </Card>

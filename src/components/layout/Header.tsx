@@ -13,16 +13,11 @@ import type { Locale } from "@/i18n/config";
 import { routeMap } from "@/i18n/routes";
 
 interface HeaderProps {
-  dictionary: {
-    home: string;
-    directory: string;
-    searchPlaceholder: string;
-    login: string;
-    searchButton: string;
-  };
+  dictionary: any; // Using any for simplicity or I could define the full type
 }
 
 export function Header({ dictionary }: HeaderProps) {
+  const dict = dictionary.header;
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -64,7 +59,7 @@ export function Header({ dictionary }: HeaderProps) {
                 href={`/${locale}/${routeMap.directory[locale]}`}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                {dictionary.directory}
+                {dict.directory}
               </Link>
             </nav>
           </div>
@@ -76,7 +71,7 @@ export function Header({ dictionary }: HeaderProps) {
               className="relative hidden sm:flex items-center w-64 h-9 px-3 text-sm text-muted-foreground bg-muted/50 border border-input rounded-md hover:bg-muted transition-colors"
             >
               <Search className="w-4 h-4 mr-2" />
-              <span>{dictionary.searchPlaceholder}</span>
+              <span>{dict.searchPlaceholder}</span>
               <kbd className="pointer-events-none absolute right-2 top-[50%] -translate-y-[50%] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
                 <span className="text-xs">⌘</span>K
               </kbd>
@@ -110,7 +105,7 @@ export function Header({ dictionary }: HeaderProps) {
             <Link href={`/${locale}/${routeMap.login[locale]}`}>
               <Button variant="default" size="sm" className="h-9 gap-2">
                 <User className="w-4 h-4" />
-                <span className="hidden lg:inline">{dictionary.login}</span>
+                <span className="hidden lg:inline">{dict.login}</span>
               </Button>
             </Link>
 
@@ -141,14 +136,14 @@ export function Header({ dictionary }: HeaderProps) {
                   className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {dictionary.home}
+                  {dict.home}
                 </Link>
                 <Link
                   href={`/${locale}/${routeMap.directory[locale]}`}
                   className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {dictionary.directory}
+                  {dict.directory}
                 </Link>
 
                 <div className="mt-auto pt-6 mb-20 border-t border-border/40">
@@ -171,7 +166,16 @@ export function Header({ dictionary }: HeaderProps) {
         )}
       </header>
 
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchModal
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        locale={locale}
+        dict={{
+          ...dictionary.search,
+          statusMap: dictionary.animeDetails.statusMap,
+          typeMap: dictionary.animeDetails.typeMap,
+        }}
+      />
     </>
   );
 }

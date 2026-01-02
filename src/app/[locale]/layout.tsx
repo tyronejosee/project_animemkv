@@ -42,7 +42,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header dictionary={dictionary.header} />
+          <Header dictionary={dictionary} />
           <main className="flex-1">{children}</main>
           <Footer dictionary={dictionary.footer} locale={locale} />
         </ThemeProvider>

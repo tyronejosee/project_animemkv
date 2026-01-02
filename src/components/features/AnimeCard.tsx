@@ -4,15 +4,21 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import type { Locale } from "@/i18n/config";
 import type { Anime } from "@/types";
 
 interface AnimeCardProps {
   anime: Anime;
+  locale: Locale;
+  dict: {
+    statusMap: Record<string, string>;
+    typeMap: Record<string, string>;
+  };
 }
 
-export function AnimeCard({ anime }: AnimeCardProps) {
+export function AnimeCard({ anime, locale, dict }: AnimeCardProps) {
   return (
-    <Link href={`/anime/${anime.slug}`} className="group">
+    <Link href={`/${locale}/anime/${anime.slug}`} className="group">
       <Card className="overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
         <div className="relative aspect-2/3 overflow-hidden">
           {/* Cover Image */}
@@ -35,13 +41,13 @@ export function AnimeCard({ anime }: AnimeCardProps) {
                 variant={anime.type === "Anime" ? "default" : "secondary"}
                 className="text-xs font-bold shadow-sm"
               >
-                {anime.type}
+                {dict.typeMap[anime.type] || anime.type}
               </Badge>
             </div>
           </div>
 
           {/* Gradient overlay - only visible on hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Content overlay - slides up on hover */}
           <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out flex justify-between gap-2">
@@ -56,7 +62,7 @@ export function AnimeCard({ anime }: AnimeCardProps) {
                   : "bg-primary/90 text-primary-foreground"
               }`}
             >
-              {anime.status}
+              {dict.statusMap[anime.status] || anime.status}
             </Badge>
 
             {/* Rating */}

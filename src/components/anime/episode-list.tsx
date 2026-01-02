@@ -6,18 +6,28 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import type { Locale } from "@/i18n/config";
+import { routeMap } from "@/i18n/routes";
 import type { Episode } from "@/types";
 
 interface EpisodeListProps {
   episodes: Episode[];
   animeSlug: string;
   animeTitle: string;
+  dict: {
+    title: string;
+    ascending: string;
+    descending: string;
+  };
+  locale: Locale;
 }
 
 export function EpisodeList({
   episodes,
   animeSlug,
   animeTitle,
+  dict,
+  locale,
 }: EpisodeListProps) {
   const [isDescending, setIsDescending] = useState(true);
 
@@ -30,7 +40,7 @@ export function EpisodeList({
     <Card>
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Lista de episodios</h2>
+          <h2 className="text-xl font-bold">{dict.title}</h2>
           <Button
             variant="outline"
             size="sm"
@@ -38,14 +48,14 @@ export function EpisodeList({
             onClick={() => setIsDescending(!isDescending)}
           >
             <ArrowUpDown className="w-4 h-4" />
-            {isDescending ? "Mayor a Menor" : "Menor a Mayor"}
+            {isDescending ? dict.descending : dict.ascending}
           </Button>
         </div>
 
         <div className="space-y-2 mt-4">
           {sortedEpisodes.map((ep) => (
             <Link
-              href={`/ver/${animeSlug}-${ep.number}`}
+              href={`/${locale}/${routeMap.watch[locale]}/${animeSlug}-${ep.number}`}
               key={ep.number}
               className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
             >

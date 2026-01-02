@@ -16,4 +16,73 @@ export const es = {
     followUs: "Síguenos",
     rightsReserved: "Todos los derechos reservados.",
   },
+  animeDetails: {
+    watchNow: "VER AHORA",
+    addToList: "AGREGAR A LISTA",
+    type: "Tipo",
+    status: "Estado",
+    episodes: "Episodios",
+    rating: "Rating",
+    tabs: {
+      synopsis: "Sinopsis",
+      relation: "Relación",
+      resources: "Recursos",
+    },
+    noRelation: "No hay información de relación disponible.",
+    noResources: "No hay recursos disponibles.",
+    statusMap: {
+      "En emision": "En emisión",
+      Finalizado: "Finalizado",
+      Proximamente: "Próximamente",
+    },
+    typeMap: {
+      Anime: "Anime",
+      Pelicula: "Película",
+      OVA: "OVA",
+      Especial: "Especial",
+    },
+    episodesList: {
+      title: "Lista de episodios",
+      ascending: "Menor a Mayor",
+      descending: "Mayor a Menor",
+    },
+  },
+  sidebar: {
+    airingTitle: "En Emisión",
+  },
+  general: {
+    episodesSuffix: "episodios",
+    episodeAbbr: "EP",
+    timeAgo: "Hace 2 horas",
+    today: "Hoy",
+  },
+  home: {
+    latestEpisodes: "Últimos Episodios",
+    latestAnimes: "Últimos animes agregados",
+  },
+  welcome: {
+    title: "¡Bienvenido a AnimeMKV!",
+    description:
+      "Tu portal favorito para ver anime en alta calidad. Disfruta de los últimos estrenos y clásicos del anime.",
+  },
+  directory: {
+    title: "Directorio",
+    filters: "Filtros",
+    all: "Todos",
+    genre: "Género",
+    year: "Año",
+    type: "Tipo",
+    status: "Estado",
+    order: "Ordenar",
+    orderDefault: "Por Defecto",
+    orderTitle: "Nombre A-Z",
+    activeFilters: "Filtros activos:",
+    clear: "Limpiar",
+  },
+  search: {
+    placeholder: "Buscar anime...",
+    searching: "Buscando...",
+    noResults: "No se encontraron resultados para",
+    startTyping: "Escribe para buscar...",
+  },
 };
