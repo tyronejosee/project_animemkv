@@ -1,10 +1,11 @@
 "use client";
 
-import { Menu, Moon, Search, Sun, User, X } from "lucide-react";
+import { Heart, Menu, Moon, Search, Sun, User, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { FavoritesSheet } from "@/components/features/FavoritesSheet";
 import { SearchModal } from "@/components/features/SearchModal";
 import { Button } from "@/components/ui/button";
 
@@ -12,8 +13,8 @@ export function Header() {
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -29,7 +30,6 @@ export function Header() {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          {/* Logo */}
           <div className="flex items-center gap-8">
             <Link
               href="/"
@@ -41,7 +41,6 @@ export function Header() {
               <div className="text-2xl font-bold text-foreground">mkv</div>
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
               <Link
                 href="/directorio"
@@ -52,9 +51,7 @@ export function Header() {
             </nav>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
-            {/* Search Trigger */}
             <button
               onClick={() => setSearchOpen(true)}
               className="relative hidden sm:flex items-center w-64 h-9 px-3 text-sm text-muted-foreground bg-muted/50 border border-input rounded-md hover:bg-muted transition-colors"
@@ -75,7 +72,15 @@ export function Header() {
               <Search className="w-5 h-5" />
             </Button>
 
-            {/* Theme Toggle */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setFavoritesOpen(true)}
+              className="h-9 w-9 relative"
+            >
+              <Heart className="h-4 w-4" />
+            </Button>
+
             <Button
               variant="outline"
               size="icon"
@@ -87,7 +92,6 @@ export function Header() {
               <span className="sr-only">Toggle theme</span>
             </Button>
 
-            {/* Login Button */}
             <Link href="/login">
               <Button variant="default" size="sm" className="h-9 gap-2">
                 <User className="w-4 h-4" />
@@ -95,7 +99,6 @@ export function Header() {
               </Button>
             </Link>
 
-            {/* Mobile Menu Toggle */}
             <Button
               variant="outline"
               size="icon"
@@ -111,10 +114,8 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <>
-            {/* Menu */}
             <div className="fixed inset-x-0 top-16 bottom-0 z-40 md:hidden bg-background border-t border-border/40 animate-in slide-in-from-top-2 h-screen">
               <nav className="flex flex-col gap-6 p-6 h-full overflow-y-auto">
                 <Link
@@ -149,6 +150,7 @@ export function Header() {
       </header>
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <FavoritesSheet open={favoritesOpen} onOpenChange={setFavoritesOpen} />
     </>
   );
 }

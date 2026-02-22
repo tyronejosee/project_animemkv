@@ -63,10 +63,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-background/80 backdrop-blur-sm">
-      <div
-        className="absolute inset-0"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0" onClick={onClose} />
       <Card className="w-full max-w-2xl relative z-50 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         <div className="p-4 border-b flex items-center gap-3">
           <Search className="w-5 h-5 text-muted-foreground" />
@@ -121,7 +118,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             </ScrollArea>
           ) : query.trim() ? (
             <div className="py-8 text-center text-muted-foreground">
-              No se encontraron resultados para "{query}"
+              No se encontraron resultados para &quot;{query}&quot;
             </div>
           ) : (
             <div className="py-8 text-center text-muted-foreground">

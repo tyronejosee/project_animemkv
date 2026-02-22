@@ -1,7 +1,7 @@
 "use client";
 
 import { Play } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -13,14 +13,10 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ title, sources }: VideoPlayerProps) {
-  const [selectedServer, setSelectedServer] = useState<VideoSource | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (sources.length > 0 && !selectedServer) {
-      setSelectedServer(sources[0]);
-    }
-  }, [sources, selectedServer]);
+  const [selectedServer, setSelectedServer] = useState<VideoSource | null>(
+    () => sources[0] || null,
+  );
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   if (!isPlaying) {
     return (
@@ -58,13 +54,11 @@ export function VideoPlayer({ title, sources }: VideoPlayerProps) {
           <Button
             key={server.id}
             onClick={() => setSelectedServer(server)}
-            variant={
-              selectedServer.id === server.id ? "default" : "outline"
-            }
+            variant={selectedServer.id === server.id ? "default" : "outline"}
             size="default"
             className={cn(
               "transition-all",
-              selectedServer.id === server.id && "shadow-md"
+              selectedServer.id === server.id && "shadow-md",
             )}
           >
             {server.platform}

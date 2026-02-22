@@ -21,7 +21,7 @@ export default async function EpisodePage({ params }: PageProps) {
   const number = parseInt(parts.pop() || "0");
   const animeSlug = parts.join("-");
 
-  let episode = await api.getEpisode(animeSlug, number);
+  const episode = await api.getEpisode(animeSlug, number);
   const anime = await api.getAnimeBySlug(animeSlug);
 
   const sources = episode ? await api.getVideoSources(episode.id) : [];
@@ -41,7 +41,7 @@ export default async function EpisodePage({ params }: PageProps) {
           href="/"
           className={cn(
             "inline-flex items-center gap-1.5 hover:text-foreground transition-colors",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm",
           )}
         >
           <Home className="h-3.5 w-3.5" />
@@ -71,6 +71,7 @@ export default async function EpisodePage({ params }: PageProps) {
           {/* Video Player */}
           <div className="w-full">
             <VideoPlayer
+              key={episode.id}
               title={`${anime?.title} - Episodio ${number}`}
               sources={sources}
             />
@@ -87,7 +88,9 @@ export default async function EpisodePage({ params }: PageProps) {
                   disabled={number <= 1}
                   className={cn(number <= 1 && "opacity-50 cursor-not-allowed")}
                 >
-                  <Link href={number > 1 ? `/ver/${animeSlug}-${number - 1}` : "#"}>
+                  <Link
+                    href={number > 1 ? `/ver/${animeSlug}-${number - 1}` : "#"}
+                  >
                     <ChevronLeft />
                     <span className="hidden sm:inline">Anterior</span>
                   </Link>
@@ -106,7 +109,7 @@ export default async function EpisodePage({ params }: PageProps) {
                   asChild
                   disabled={!hasNextEpisode}
                   className={cn(
-                    !hasNextEpisode && "opacity-50 cursor-not-allowed"
+                    !hasNextEpisode && "opacity-50 cursor-not-allowed",
                   )}
                 >
                   <Link
